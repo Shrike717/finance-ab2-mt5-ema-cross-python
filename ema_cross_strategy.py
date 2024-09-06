@@ -38,7 +38,9 @@ def ema_cross_strategy(symbol, timeframe, ema_one, ema_two, balance, amount_to_r
         ema_two=ema_two
     )
     # Step 4: Check last line of dataframe
-    trade_event = data.tail(1).copy()
+    trade_event = data.tail(1).copy() # <- This doesn't work for me. SP, SL, TP are 0.00
+    # Step 4: Test with candle before last
+    # trade_event = data.iloc[-2:-1].copy() # <- An order is placed, but one candle after the EMA cross
     # See if 'ema_cross' is true
     if trade_event['ema_cross'].values:
         # Make Trade requires balance, comment, amount_to_risk
