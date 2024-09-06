@@ -25,20 +25,52 @@ def ema_cross_strategy(symbol, timeframe, ema_one, ema_two, balance, amount_to_r
         symbol=symbol,
         timeframe=timeframe
     )
+    # Debug log
+    last_row = data.tail(1).iloc[0]
+    index = data.tail(1).index[0]
+    print(f"[Step 1: ema_cross_strategy.get_data]\nindex: {index}")
+    for column in data.columns:
+        print(f"{column}: {last_row[column]}")
+    print("************************************")
+
     # Step 2: Calculate indicators
     data = calc_indicators(
         data=data,
         ema_one=ema_one,
         ema_two=ema_two
     )
+    # Debug log
+    last_row = data.tail(1).iloc[0]
+    index = data.tail(1).index[0]
+    print(f"[Step 2: ema_cross_strategy.calc_indicators]\nindex: {index}")
+    for column in data.columns:
+        print(f"{column}: {last_row[column]}")
+    print("************************************")
+
     # Step 3: Determine if a trade event has occurred
     data = det_trade(
         data=data,
         ema_one=ema_one,
         ema_two=ema_two
     )
+    # Debug log
+    last_row = data.tail(1).iloc[0]
+    index = data.tail(1).index[0]
+    print(f"[Step 3: ema_cross_strategy.det_trade]\nindex: {index}")
+    for column in data.columns:
+        print(f"{column}: {last_row[column]}")
+    print("************************************")
+
     # Step 4: Check last line of dataframe
     trade_event = data.tail(1).copy() # <- This doesn't work for me. SP, SL, TP are 0.00
+    # Debug log
+    last_row = trade_event.iloc[0]
+    index = trade_event.index[0]
+    print(f"[Step 4: ema_cross_strategy] Trade Event:\nindex: {index}")
+    for column in trade_event.columns:
+        print(f"{column}: {last_row[column]}")
+    print("************************************")
+
     # Step 4: Test with candle before last
     # trade_event = data.iloc[-2:-1].copy() # <- An order is placed, but one candle after the EMA cross
     # See if 'ema_cross' is true
@@ -133,7 +165,7 @@ def det_trade(data, ema_one, ema_two):
                 # print(f"[det_trade] Trade Event Detected: {dataframe.loc[i]})")
     # Return the dataframe
     # Debug log
-    print(f"[det_trade] return dataframe: {dataframe.tail(1)}")
+    # print(f"[det_trade] return dataframe: {dataframe.tail(1)}")
     return dataframe
 
 
