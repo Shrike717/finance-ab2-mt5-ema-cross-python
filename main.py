@@ -7,7 +7,6 @@ import pandas
 # Custom Libraries
 import mt5_lib
 import ema_cross_strategy
-import indicator_lib
 
 # Location of settings.json
 settings_filepath = "settings.json" # <- This can be modified to be your own settings filepath
@@ -95,10 +94,10 @@ def run_strategy(project_settings):
         data = ema_cross_strategy.ema_cross_strategy(
             symbol=symbol,
             timeframe=timeframe,
-            ema_one=50,
-            ema_two=200,
-            balance=10000,
-            amount_to_risk=0.01
+            ema_one=2,
+            ema_two=4,
+            balance=50000,
+            amount_to_risk=0.001
         )
         if data:
             print(f"Trade Made on {symbol}")
@@ -129,7 +128,7 @@ if __name__ == '__main__':
         while 1:
             # Get a value for current time. Use BTCUSD as it trades 24/7
             time_candle = mt5_lib.get_candlesticks(
-                symbol="BTCUSD.a",
+                symbol="BTCUSD",
                 timeframe=timeframe,
                 number_of_candles=1
             )

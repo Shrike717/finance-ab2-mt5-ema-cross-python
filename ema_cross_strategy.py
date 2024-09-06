@@ -127,7 +127,11 @@ def det_trade(data, ema_one, ema_two):
                 dataframe.loc[i, 'stop_loss'] = stop_loss
                 dataframe.loc[i, 'stop_price'] = stop_price
                 dataframe.loc[i, 'take_profit'] = take_profit
+                # Debug log
+                # print(f"[det_trade] Trade Event Detected: {dataframe.loc[i]})")
     # Return the dataframe
+    # Debug log
+    print(f"[det_trade] return dataframe: {dataframe.tail(1)}")
     return dataframe
 
 
