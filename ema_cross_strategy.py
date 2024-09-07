@@ -25,12 +25,20 @@ def ema_cross_strategy(symbol, timeframe, ema_one, ema_two, balance, amount_to_r
         symbol=symbol,
         timeframe=timeframe
     )
-    # Debug log
+    # Debug log for the last candle
     last_row = data.tail(1).iloc[0]
-    index = data.tail(1).index[0]
-    print(f"[Step 1: ema_cross_strategy.get_data]\nindex: {index}")
+    last_index = data.tail(1).index[0]
+    print(f"[Step 1: ema_cross_strategy.get_data]\nindex: {last_index}")
     for column in data.columns:
         print(f"{column}: {last_row[column]}")
+    print("************************************")
+
+    # Debug log for the second to last candle
+    second_last_row = data.tail(2).iloc[0]
+    second_last_index = data.tail(2).index[0]
+    print(f"[Step 1: ema_cross_strategy.get_data]\nindex: {second_last_index}")
+    for column in data.columns:
+        print(f"{column}: {second_last_row[column]}")
     print("************************************")
 
     # Step 2: Calculate indicators
@@ -39,12 +47,19 @@ def ema_cross_strategy(symbol, timeframe, ema_one, ema_two, balance, amount_to_r
         ema_one=ema_one,
         ema_two=ema_two
     )
-    # Debug log
+    # Debug log for the last candle
     last_row = data.tail(1).iloc[0]
     index = data.tail(1).index[0]
     print(f"[Step 2: ema_cross_strategy.calc_indicators]\nindex: {index}")
     for column in data.columns:
         print(f"{column}: {last_row[column]}")
+    print("************************************")
+    # Debug log for the second to last candle
+    second_last_row = data.tail(2).iloc[0]
+    second_last_index = data.tail(2).index[0]
+    print(f"[Step 2: ema_cross_strategy.calc_indicators]\nindex: {second_last_index}")
+    for column in data.columns:
+        print(f"{column}: {second_last_row[column]}")
     print("************************************")
 
     # Step 3: Determine if a trade event has occurred
@@ -53,17 +68,24 @@ def ema_cross_strategy(symbol, timeframe, ema_one, ema_two, balance, amount_to_r
         ema_one=ema_one,
         ema_two=ema_two
     )
-    # Debug log
+    # Debug log for the last candle
     last_row = data.tail(1).iloc[0]
     index = data.tail(1).index[0]
     print(f"[Step 3: ema_cross_strategy.det_trade]\nindex: {index}")
     for column in data.columns:
         print(f"{column}: {last_row[column]}")
     print("************************************")
+    # Debug log for the second to last candle
+    second_last_row = data.tail(2).iloc[0]
+    second_last_index = data.tail(2).index[0]
+    print(f"[Step 3: ema_cross_strategy.det_trade]\nindex: {second_last_index}")
+    for column in data.columns:
+        print(f"{column}: {second_last_row[column]}")
+    print("************************************")
 
     # Step 4: Check last line of dataframe
     trade_event = data.tail(1).copy() # <- This doesn't work for me. SP, SL, TP are 0.00
-    # Debug log
+    # Debug log for the trade event
     last_row = trade_event.iloc[0]
     index = trade_event.index[0]
     print(f"[Step 4: ema_cross_strategy] Trade Event:\nindex: {index}")
@@ -73,7 +95,7 @@ def ema_cross_strategy(symbol, timeframe, ema_one, ema_two, balance, amount_to_r
 
     # Step 4: Test with candle before last
     # trade_event = data.iloc[-2:-1].copy() # <- An order is placed, but one candle after the EMA cross
-    # See if 'ema_cross' is true
+    # See if 'ema_cross' is true    
     if trade_event['ema_cross'].values:
         # Make Trade requires balance, comment, amount_to_risk
         # Create comment
@@ -93,6 +115,7 @@ def ema_cross_strategy(symbol, timeframe, ema_one, ema_two, balance, amount_to_r
     else:
         make_trade_outcome = False
     return make_trade_outcome
+    
 
 
 # Function to determine if a trade event has occurred, and if so, calculate trade signal
