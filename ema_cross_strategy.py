@@ -75,16 +75,9 @@ def ema_cross_strategy(symbol, timeframe, ema_one, ema_two, balance, amount_to_r
     for column in data.columns:
         print(f"{column}: {last_row[column]}")
     print("************************************")
-    # Debug log for the second to last candle
-    second_last_row = data.tail(2).iloc[0]
-    second_last_index = data.tail(2).index[0]
-    print(f"[Step 3: ema_cross_strategy.det_trade]\nindex: {second_last_index}")
-    for column in data.columns:
-        print(f"{column}: {second_last_row[column]}")
-    print("************************************")
 
     # Step 4: Check last line of dataframe
-    trade_event = data.tail(1).copy() # <- This doesn't work for me. SP, SL, TP are 0.00
+    trade_event = data.tail(1).copy()
     # Debug log for the trade event
     last_row = trade_event.iloc[0]
     index = trade_event.index[0]
@@ -93,8 +86,6 @@ def ema_cross_strategy(symbol, timeframe, ema_one, ema_two, balance, amount_to_r
         print(f"{column}: {last_row[column]}")
     print("************************************")
 
-    # Step 4: Test with candle before last
-    # trade_event = data.iloc[-2:-1].copy() # <- An order is placed, but one candle after the EMA cross
     # See if 'ema_cross' is true    
     if trade_event['ema_cross'].values:
         # Make Trade requires balance, comment, amount_to_risk
@@ -180,15 +171,21 @@ def det_trade(data, ema_one, ema_two):
                     # Take Profit = distance between stop_loss and stop_price, subtracted from stop_price
                     distance = stop_loss - stop_price
                     take_profit = stop_price - distance
+
+                # Old way to add values to dataframe not working for me
+                # dataframe.loc[i, 'stop_loss'] = stop_loss
+                # dataframe.loc[i, 'stop_price'] = stop_price
+                # dataframe.loc[i, 'take_profit'] = take_profit
+
                 # Add the calculated values back to the dataframe
                 dataframe.loc[dataframe.index[i], 'stop_loss'] = stop_loss
                 dataframe.loc[dataframe.index[i], 'stop_price'] = stop_price
                 dataframe.loc[dataframe.index[i], 'take_profit'] = take_profit
                 # Debug log
-                print(f"[det_trade] Trade Event Detected: {dataframe.loc[dataframe.index[i]]})")
+                # print(f"[det_trade] Trade Event Detected: {dataframe.loc[dataframe.index[i]]})")
     # Return the dataframe
     # Debug log
-    print(f"[det_trade] return dataframe: {dataframe.tail(1)}")
+    # print(f"[det_trade] return dataframe: {dataframe.tail(1)}")
     return dataframe
 
 # Function to calculate the indicators for this strategy
