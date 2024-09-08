@@ -11,7 +11,6 @@ import ema_cross_strategy
 # Location of settings.json
 settings_filepath = "settings.json" # <- This can be modified to be your own settings filepath
 
-
 # Function to import settings from settings.json
 def get_project_settings(import_filepath):
     """
@@ -32,7 +31,6 @@ def get_project_settings(import_filepath):
     # Notify user if settings.json doesn't exist
     else:
         raise ImportError("settings.json does not exist at provided location")
-
 
 # Function to repeat startup proceedures
 def start_up(project_settings):
@@ -61,7 +59,6 @@ def start_up(project_settings):
         return True
     # Default return is False
     return False
-
 
 # Function to run the strategy
 def run_strategy(project_settings):
@@ -106,7 +103,6 @@ def run_strategy(project_settings):
     # Return True. Previous code will throw a breaking error if anything goes wrong.
     return True
 
-
 # Main function
 if __name__ == '__main__':
     print("Let's build an awesome trading bot!!!")
@@ -148,5 +144,3 @@ if __name__ == '__main__':
                 # No new candle has occurred
                 print("No new candle. Sleeping.")
                 time.sleep(1)
-
-

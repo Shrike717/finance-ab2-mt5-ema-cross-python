@@ -161,36 +161,35 @@ def det_trade(data, ema_one, ema_two):
             continue
         else:
             # Find when EMA Cross is True
-            if dataframe.loc[i, 'ema_cross']:
+            if dataframe.loc[dataframe.index[i], 'ema_cross']:
                 # Determine if a Green candle
-                if dataframe.loc[i, 'open'] < dataframe.loc[i, 'close']:
+                if dataframe.loc[dataframe.index[i], 'open'] < dataframe.loc[dataframe.index[i], 'close']:
                     # Stop Loss = Largest EMA
-                    stop_loss = dataframe.loc[i, ema_column]
+                    stop_loss = dataframe.loc[dataframe.index[i], ema_column]
                     # Stop Price = High of most recently completed candle
-                    stop_price = dataframe.loc[i, 'high']
+                    stop_price = dataframe.loc[dataframe.index[i], 'high']
                     # Take Profit = stop_price and stop_loss distance added to stop_price
                     distance = stop_price - stop_loss
                     take_profit = stop_price + distance
                 # If the row is not Green, it is Red
                 else:
                     # Stop Loss = column of largest EMA
-                    stop_loss = dataframe.loc[i, ema_column]
+                    stop_loss = dataframe.loc[dataframe.index[i], ema_column]
                     # Stop Price = low of most recently completed candle
-                    stop_price = dataframe.loc[i, 'low']
+                    stop_price = dataframe.loc[dataframe.index[i], 'low']
                     # Take Profit = distance between stop_loss and stop_price, subtracted from stop_price
                     distance = stop_loss - stop_price
                     take_profit = stop_price - distance
                 # Add the calculated values back to the dataframe
-                dataframe.loc[i, 'stop_loss'] = stop_loss
-                dataframe.loc[i, 'stop_price'] = stop_price
-                dataframe.loc[i, 'take_profit'] = take_profit
+                dataframe.loc[dataframe.index[i], 'stop_loss'] = stop_loss
+                dataframe.loc[dataframe.index[i], 'stop_price'] = stop_price
+                dataframe.loc[dataframe.index[i], 'take_profit'] = take_profit
                 # Debug log
-                # print(f"[det_trade] Trade Event Detected: {dataframe.loc[i]})")
+                print(f"[det_trade] Trade Event Detected: {dataframe.loc[dataframe.index[i]]})")
     # Return the dataframe
     # Debug log
-    # print(f"[det_trade] return dataframe: {dataframe.tail(1)}")
+    print(f"[det_trade] return dataframe: {dataframe.tail(1)}")
     return dataframe
-
 
 # Function to calculate the indicators for this strategy
 def calc_indicators(data, ema_one, ema_two):
